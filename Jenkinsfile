@@ -1,35 +1,35 @@
 pipeline {
     agent any
+        environment {
+            notifyEmail=learntechjadon@gmail.com
+            }
+    tools {
+        maven 'maven_home'
+        }
 
     stages {
-        stage('Checkout') {
+        stage('code checkout') {
             steps {
-                checkout scm
+                bat "echo hello"
+                    }
             }
-        }
-        
-        stage('Build') {
+
+        stage('code build'){
+            stpes{
+                bat "mvn clean"
+                    }
+            }
+            
+        stage('unit test') {
             steps {
-                sh 'mvn clean install'
+                bat "mvn test"
+                }
             }
-        }
 
         stage('Run SonarQube Analysis') {
             steps {
                 // Execute SonarQube scanner here
+                }
             }
-        }
-
-        stage('Publish to Artifactory') {
-            steps {
-                // Publish your artifacts to Artifactory here
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Deploy your application (e.g., to a testing environment)
-            }
-        }
     }
 }
