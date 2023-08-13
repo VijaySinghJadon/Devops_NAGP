@@ -2,22 +2,24 @@ pipeline {
     agent any
 
     tools {
-        // Define the 'Maven' tool by name
-        maven 'MAVEN_HOME' // The name specified in Jenkins configuration
+        // Specify the 'Maven' tool by name
+        maven 'Maven 3.9.4' // The name of the Maven installation in Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                bat "echo checkout"
+                checkout scm
             }
         }
 
         stage('Build') {
             steps {
                 script {
-                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
-                    sh "${mvnHome}/bin/mvn clean install"
+                    // Retrieve the Maven installation path
+                    def mvnHome = tool name: 'Maven 3.8.3', type: 'hudson.tasks.Maven$MavenInstallation'
+                    // Use Maven to build the project using batch script
+                    bat "${mvnHome}\\bin\\mvn clean install"
                 }
             }
         }
