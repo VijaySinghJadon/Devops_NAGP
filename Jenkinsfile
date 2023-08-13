@@ -1,22 +1,26 @@
 pipeline{
     agent any
-        environment {
-        notifyEmail ="vijay.jadon@nagarro.com"
-    }
+    	environment {
+          SCANNER_HOME = tool name: 'Test_Sonar', 
+          type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+          SONAR_PROJECT_KEY = 'TanuGupta_3183491_SeleniumAutomation:TanuGupta_3183491_SeleniumAutomation' 
+          SONAR_SERVER_URL = 'http://localhost:9000/' 
+          SONAR_LOGIN = 'sqa_e51c02d6846b755035c6f242b27ad881310be3ab' 
+		  notifyEmail ="vijay.jadon@nagarro.com"
+	}
     tools{
         maven 'maven_home'
     }
     triggers {
-        cron('0 07 * * *')
-      }
+    	cron('0 07 * * *')
+  	}
+    
     stages{
         stage("code checkout"){
             steps{
             bat "echo hello"
             }
         }   
-
- 
 
         stage("code build"){
             steps{
@@ -28,7 +32,20 @@ pipeline{
             bat "mvn test "
             }
         }
+stage('SonarQube Analysis') {
+    steps {
+        script {
+            def scannerPath = "${env.SCANNER_HOME}\\bin"
+            def sonarScannerCmd = "${scannerPath}\\sonar-scanner.bat"
+            def sonarCmd = "${sonarScannerCmd} -Dsonar.projectKey=${env.SONAR_PROJECT_KEY} -Dsonar.host.url=${env.SONAR_SERVER_URL} -Dsonar.login=${env.SONAR_LOGIN}"
+
+ 
+
+            bat "set PATH=\"${scannerPath};%PATH%\" && ${sonarCmd}"
+        }
     }
+}
+}
     post{
         success{
             bat "echo success"
