@@ -1,6 +1,9 @@
 pipeline
 {
 	agent any
+	tools{
+		maven "MAVEN_HOME"
+	}
 	stages{
 		stage('Code Checkout'){
 			steps{
