@@ -1,29 +1,27 @@
-pipeline
-{
-	agent any
-	tools{
-		maven "MAVEN_HOME"
-	}
-	stages{
-		stage('Code Checkout'){
-			steps{
-				bat "echo checkout"
-			}
-		}
-		stage('Code Test'){
-			steps{
-				bat "echo test"
-			}
-		}
-		stage('Code Deploy'){
-			steps{
-				bat "echo deploy"
-			}
-		}
-	}
-	post{
-		success{
-			bat "echo success"
-		}
-	}
+pipeline {
+    agent any
+
+    tools {
+        // Define the 'Maven' tool by name
+        maven 'Maven' // The name specified in Jenkins configuration
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                bat "echo checkout"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
+                    sh "${mvnHome}/bin/mvn clean install"
+                }
+            }
+        }
+
+        // Add more stages as needed for testing, deployment, etc.
+    }
 }
