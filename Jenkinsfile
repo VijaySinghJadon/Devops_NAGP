@@ -18,4 +18,9 @@ pipeline
 			}
 		}
 	}
+	post{
+		success{
+			bat "success"
+		}
+	}
 }
