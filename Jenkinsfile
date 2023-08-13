@@ -20,7 +20,7 @@ pipeline
 	}
 	post{
 		success{
-			bat "success"
+			bat "echo success"
 		}
 	}
 }
