@@ -1,22 +1,37 @@
-pipeline {
+pipeline{
     agent any
+        environment {
+        notifyEmail ="vijay.jadon@nagarro.com"
+    }
+    tools{
+        maven 'maven_home'
+    }
+    triggers {
+        cron('0 07 * * *')
+      }
+    stages{
+        stage("code checkout"){
+            steps{
+            bat "echo hello"
+            }
+        }   
 
+ 
 
-
-    stages {
-        stage('Checkout') {
-            steps {
-                bat "echo runt"
+        stage("code build"){
+            steps{
+             bat "mvn clean test"
             }
         }
-
-        stage('Build') {
-            steps {
-                   bat "mvn clean install"
-                }
+        stage("unit test"){
+            steps{
+            bat "mvn test "
             }
         }
-
-        // Add more stages as needed for testing, deployment, etc.
-    
+    }
+    post{
+        success{
+            bat "echo success"
+            }
+        }
 }
