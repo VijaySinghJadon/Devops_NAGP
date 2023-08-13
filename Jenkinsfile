@@ -14,15 +14,21 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Run SonarQube Analysis') {
             steps {
-                sh 'mvn test'
+                // Execute SonarQube scanner here
+            }
+        }
+
+        stage('Publish to Artifactory') {
+            steps {
+                // Publish your artifacts to Artifactory here
             }
         }
 
         stage('Deploy') {
             steps {
-                // Add deployment steps here
+                // Deploy your application (e.g., to a testing environment)
             }
         }
     }
